@@ -21,7 +21,7 @@ void setup() {
   size(500, 500);
   background(bg);
   stroke(255);
-  frameRate(100);
+  frameRate(100000);
   lines = loadStrings("test.txt");
 }
 
@@ -54,7 +54,7 @@ void draw() {
     }
   }
   redraw();
-  time_plus(1);
+  time_plus(60);
 }
 
 void time_plus(int round){
@@ -81,7 +81,7 @@ void time_plus(int round){
     }  
   }
 
-  //println(time);
+  println(time);
 }
 
 
@@ -95,6 +95,6 @@ void redraw(){
     b=Integer.valueOf(people[i].id)/256/256 % 256;
     p = color(r,g,b);
     stroke(p);
-    rect(people[i].x, people[i].y, 4 , 4);
+    rect(people[i].x, people[i].y+0.1, 4 , 4);
   }
 }
