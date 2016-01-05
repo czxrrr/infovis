@@ -53,7 +53,7 @@ void draw()
     if (overCircle(x, y, d))
     {
       fill(0);
-      text(pieces[0], 0, yID);
+      text(pieces[0]+" "+pieces[3], 0, yID);
       fill(255);
       yID += 10;
     }
