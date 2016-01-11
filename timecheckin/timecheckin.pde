@@ -2,12 +2,12 @@ int num;
 String[] lines;
 String[] pieces;
 int tmp;
-int maxTime = 0, maxDst = 0;
-String maxTimeId, maxDstId;
+int maxCheckin = 0, maxTime = 0;//max check-in times and max stay time
+String maxCheckinId, maxTimeId;//ID of max check-in times and ID of max stay time
 float x, y;
 String[][] str;
 int edge = 20;
-int[][] colors = new int[][]{
+int[][] colors = new int[][]{//6 colors
   {255,0,0}, 
   {0,255,0},
   {0,0,255},
@@ -15,9 +15,9 @@ int[][] colors = new int[][]{
   {255,0,255},
   {0,255,255}
 };
-int txt = 0;
-int ID = -1;
-int drawWhat = 0;
+int txt = 0;//decide which day to show
+int ID = -1;//the selected ID
+int drawWhat = 0;//decide the page to show
 
 void setup()
 {
@@ -27,8 +27,10 @@ void setup()
 
 void mysetup()
 {
+  //drawWhat, 0:show scatter diagram, 1:show single person
   if (drawWhat==0)
   {
+    //read one of three days
     if (txt==0)
       lines = loadStrings("time_checkin1.txt");
     if (txt==1)
@@ -43,20 +45,18 @@ void mysetup()
       if (pieces.length<=1) println(lines[i]);
       str[i] = pieces;
       tmp = Integer.parseInt(pieces[1]);
-      if (tmp > maxTime) 
+      if (tmp > maxCheckin)//get the max check-in times
+      {
+        maxCheckin = tmp;
+        maxCheckinId = pieces[0];
+      }
+      tmp = Integer.parseInt(pieces[2]);
+      if (tmp > maxTime)//get the max stay time
       {
         maxTime = tmp;
         maxTimeId = pieces[0];
       }
-      tmp = Integer.parseInt(pieces[2]);
-      if (tmp > maxDst)
-      {
-        maxDst = tmp;
-        maxDstId = pieces[0];
-      }
-      if (tmp>5000) println(pieces[0]);
     }
-    //println("maxDstID = " + maxDstId);
     
     smooth();
   }
@@ -68,6 +68,7 @@ void mysetup()
 
 void draw()
 {
+  //drawWhat, 0:show scatter diagram, 1:show single person
   if (drawWhat==0)
   {
     background(200);
@@ -79,13 +80,15 @@ void draw()
     for (int i=1; i<num; i++)
     {
       pieces = str[i];
-      y = height - map(Integer.parseInt(pieces[1]), 0, maxTime, edge, width-edge);
-      x = map(Integer.parseInt(pieces[2]), 0, maxDst, edge, height-edge);
-      //point(x, y);
+      //calculate coordinate x and y
+      y = height - map(Integer.parseInt(pieces[1]), 0, maxCheckin, edge, width-edge);
+      x = map(Integer.parseInt(pieces[2]), 0, maxTime, edge, height-edge);
+      //judge color
       fill(colors[Integer.parseInt(pieces[3])][0],
       colors[Integer.parseInt(pieces[3])][1],
       colors[Integer.parseInt(pieces[3])][2]);
       ellipse(x, y, d, d);
+      //check whether arrow is on an ID
       if (overCircle(x, y, d))
       {
         fill(0);
@@ -105,11 +108,11 @@ void draw()
 
 void keyPressed()
 {
-  if (key=='q') drawWhat = 0;
-  if (key=='z') txt = 0;
-  if (key=='x') txt = 1;
-  if (key=='c') txt = 2;
-  mysetup();
+  if (key=='q') drawWhat = 0;//go to show scatter diagram
+  if (key=='z') txt = 0;//Friday
+  if (key=='x') txt = 1;//Saturday
+  if (key=='c') txt = 2;//Sunday
+  mysetup();//resetup
 }
 
 void mousePressed()
@@ -117,11 +120,12 @@ void mousePressed()
   println(ID);
   if (ID != -1)
   {
-    drawWhat = 1;
-    mysetup();
+    drawWhat = 1;//go to show single person
+    mysetup();//resetup
   }
 }
 
+//decide whether arrow is on an ID
 boolean overCircle(float x, float y, int diameter) {
   float disX = x - mouseX;
   float disY = y - mouseY;

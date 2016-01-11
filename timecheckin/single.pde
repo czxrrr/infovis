@@ -19,12 +19,14 @@ void setupSin()
   people=new People[999999];
   count=0;
   h=8; min=0; sec=0;
+  index = 1;
   time="2014-6-06 08:00:00";
   bg=loadImage("back.jpg");
   size(500, 500);
   background(bg);
   stroke(188);
   frameRate(600);
+  //get data from three files switched by 'txt'
   if (txt==0)
   {
     date="2014-6-06 ";
@@ -51,33 +53,31 @@ void drawSin() {
       //current time is more than the data time, then shows the date
       //this is aim to speed up to play,or it will cost me more than 15 mins
       //to watch the movement of crowd through the whole day
-      if (pieces[1].equals(id))
-      if (pieces[2].equals("check-in")){
-        int x = int(pieces[3]) * 5;
-        int y = 495 - int(pieces[4]) * 5;
-        people[count]=new People(pieces[1],x,y);
-        count++;
-        //point(x, y);
-        d=8;
-        fill(255);
-      }else{
-        for(i=0;i<count;i++){
-          if(pieces[1].equals(people[i].id)){
-            people[i].x=int(pieces[3]) * 5;
-            people[i].y=495 - int(pieces[4]) * 5;
-            
-            d = 4;
-            fill(0);
+      if (pieces[1].equals(id))//find the ID to draw
+        if (pieces[2].equals("check-in")){
+          int x = int(pieces[3]) * 5;
+          int y = 495 - int(pieces[4]) * 5;
+          people[count]=new People(pieces[1],x,y);
+          count++;
+          //point(x, y);
+          d=8;
+          fill(255);
+        }else{
+          for(i=0;i<count;i++){
+            if(pieces[1].equals(people[i].id)){
+              people[i].x=int(pieces[3]) * 5;
+              people[i].y=495 - int(pieces[4]) * 5;
+              
+              d = 4;
+              fill(0);
+            }
           }
-        }
-      } 
+        } 
       index = index + 1;  
       if (index>=lines.length) break;
       pieces = split(lines[index], ',');
     }
   }
-  //redraw();
-  //time_plus(60);
   time_plus(1);
   for(i=0;i<count;i++){
     if(people[i].id.equals(id)){
@@ -116,19 +116,3 @@ void time_plus(int round){
   //text(time, 0, 10);
 }
 
-
-//void redraw(){
-//  int i,r,g,b;
-//  color p;
-//  //background(bg);
-//  for(i=0;i<count;i++)
-//  if (people[i].id.equals(id))
-//  {
-//    r=Integer.valueOf(people[i].id)%256;
-//    g=Integer.valueOf(people[i].id)/256 %256;
-//    b=Integer.valueOf(people[i].id)/256/256 % 256;
-//    p = color(r,g,b);
-//    stroke(p);
-//    rect(people[i].x, people[i].y+0.1, 4 , 4);
-//  }
-//}
