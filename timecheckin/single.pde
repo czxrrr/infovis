@@ -47,7 +47,7 @@ void drawSin() {
   if (index < lines.length) {
     pieces = split(lines[index], ',');
     //println(pieces[0]);
-    while (pieces.length > 0 && time.compareTo(pieces[0])>=0) {
+    while (pieces.length > 1 && time.compareTo(pieces[0])>=0) {
       //current time is more than the data time, then shows the date
       //this is aim to speed up to play,or it will cost me more than 15 mins
       //to watch the movement of crowd through the whole day

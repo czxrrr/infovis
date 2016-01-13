@@ -7,6 +7,7 @@ String maxTimeId, maxDstId;
 float x, y;
 String[][] str;
 int edge = 20;
+int segment =10;
 int[][] colors = new int[][]{
   {255,0,0}, 
   {0,255,0},
@@ -89,13 +90,30 @@ void draw()
       if (overCircle(x, y, d))
       {
         fill(0);
-        text(pieces[0]+" "+pieces[1]+" "+pieces[3], 0, yID);
+        text(pieces[0]+" "+pieces[1]+" "+pieces[3], edge*2, yID);
         fill(255);
         yID += 10;
         if (ID == -1)
           ID = Integer.parseInt(pieces[0]);
       }
     }
+    fill(0);
+    text(0, edge/2, height-edge/2);
+    //
+    int xSeg = maxDst/segment;
+    int ySeg = maxTime/segment;
+    //draw x axis
+    for(int j=1;j<segment;j++)
+      text(""+j*xSeg,j*width/segment,height-10);
+    for(int j=1;j<segment;j++)
+      text(""+j*ySeg,6,(segment-j)*height/segment);
+     text("Tm",480,490);
+     text("Ci",10,10);
+    //maxTime is y, maxDst is x
+    //for (int j = 1; j<10; j++)
+      //text(maxDst/10*i,  
+    line(edge, height-edge, width-edge/2, width-edge);
+    line(edge, height-edge, edge, edge/2);
   }
   if (drawWhat==1)
   {
