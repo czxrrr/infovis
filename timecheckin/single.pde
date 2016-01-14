@@ -13,6 +13,7 @@ String time;
 float d;
 String id;//="1983765";//suspect
 String date="2014-6-07 ";
+boolean c;
 void setupSin()
 {
   id = ""+ID;
@@ -30,17 +31,17 @@ void setupSin()
   if (txt==0)
   {
     date="2014-6-06 ";
-    lines = loadStrings("test1.txt");
+    lines = loadStrings("park-movement-Fri-FIXED-2.0.csv");
   }
   if (txt==1)
   {
     date="2014-6-07 ";
-    lines = loadStrings("test2.txt");
+    lines = loadStrings("park-movement-Sat.csv");
   }
   if (txt==2)
   {
     date="2014-6-08 ";
-    lines = loadStrings("test3.txt");
+    lines = loadStrings("park-movement-Sun.csv");
   }
 }
 
@@ -49,7 +50,7 @@ void drawSin() {
   if (index < lines.length) {
     pieces = split(lines[index], ',');
     //println(pieces[0]);
-    while (pieces.length > 1 && time.compareTo(pieces[0])>=0) {
+    while (pieces.length > 0 && time.compareTo(pieces[0])>=0) {
       //current time is more than the data time, then shows the date
       //this is aim to speed up to play,or it will cost me more than 15 mins
       //to watch the movement of crowd through the whole day
@@ -61,7 +62,8 @@ void drawSin() {
           count++;
           //point(x, y);
           d=8;
-          fill(255);
+          c = true;
+          //fill(255, 255, 255, 40);
         }else{
           for(i=0;i<count;i++){
             if(pieces[1].equals(people[i].id)){
@@ -69,7 +71,8 @@ void drawSin() {
               people[i].y=495 - int(pieces[4]) * 5;
               
               d = 4;
-              fill(0);
+              c = false;
+              //fill(0, 0, 0, 40);
             }
           }
         } 
@@ -81,6 +84,11 @@ void drawSin() {
   time_plus(1);
   for(i=0;i<count;i++){
     if(people[i].id.equals(id)){
+      noStroke();
+      if (c)
+        fill(255, 255, 255);
+      else
+        fill(0, 0, 0);
       ellipse(people[i].x, people[i].y, d, d);
       if (d<50) d+=0.01;
     }
@@ -115,4 +123,3 @@ void time_plus(int round){
   println(time);
   //text(time, 0, 10);
 }
-
